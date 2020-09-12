@@ -1,11 +1,13 @@
 <div class="col mt-3">
     <div class="d-flex justify-content-center border border-black p-3">
-        @if(!$widget)
-            <a href="{{ route('widget.edit', $position) }}">
-                <i class="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
-            </a>
-        @else
-            <div class="row">
+        <div class="row">
+            @if(!$widget)
+                <div class="col-12 text-right">
+                    <a href="{{ route('widget.edit', $position) }}">
+                        <i class="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
+                    </a>
+                </div>
+            @else
                 @if(Session::has('edit_mode'))
                     <div class="col-12 text-right">
                         <a href="{{ route('widget.edit', $position) }}">
@@ -18,7 +20,7 @@
                            class="btn btn-lg text-light">{{ $widget['title']}} </a>
                     </div>
                 @endif
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 </div>
