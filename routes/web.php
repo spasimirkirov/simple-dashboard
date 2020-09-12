@@ -14,17 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DashboardController::class, 'index']);
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/switch_mode', [DashboardController::class, 'toggle_edit_mode'])->name('toggle_edit_mode');
 
 Route::name('widget.')->group(function(){
 
     Route::get('/edit/{location_id}', [DashboardController::class, 'edit'])
         ->name('edit');
+
     Route::put('/update/{location_id}', [DashboardController::class, 'update'])
         ->name('update');
 
-    Route::get('/remove/{location_id}', [DashboardController::class, 'remove'])
-        ->name('remove');
-    Route::delete('/delete/location_id', [DashboardController::class, 'delete'])
+    Route::delete('/delete/{location_id}', [DashboardController::class, 'delete'])
         ->name('delete');
 });
+
+

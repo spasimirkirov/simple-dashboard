@@ -2,67 +2,77 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WidgetUpdateRequest;
 use App\Models\Widgets;
-use Illuminate\Http\Request;
+use App\Repositories\WidgetRepositoryInterface;
+use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
 {
+    private $widgetRepository;
+
+    /**
+     * DashboardController constructor.
+     * @param $widgetRepository
+     */
+    public function __construct(WidgetRepositoryInterface $widgetRepository)
+    {
+        $this->widgetRepository = $widgetRepository;
+    }
+
     /**
      * Grab widgets from database and return them with a view
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        return view('widgets.index');
-    }
-
-    /**
-     * Show widget add page
-     */
-    public function add()
-    {
-    }
-
-    /**
-     * Widget create request processing
-     * @param Request $request
-     */
-    public function save(Request $request)
-    {
+        return view('dashboard.home');
     }
 
     /**
      * Show widget edit page
      * @param int $position
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(int $position)
     {
-        $widget = Widgets::where('position', $position);
+        /** @var Widgets $widget */
+        $widget = $this->widgetRepository->findOne($position);
         return view('widgets.edit')->with(['position' => $position, 'widget' => $widget]);
     }
 
-
     /**
      * Widget update request processing
-     * @param Request $request
+     * @param WidgetUpdateRequest $request
+     * @param int $position
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(WidgetUpdateRequest $request, int $position)
     {
-    }
-
-    /**
-     * Show widget remove page
-     * @param int $id
-     */
-    public function remove(int $id)
-    {
+        $this->widgetRepository->update($request, $position);
+        return redirect()->route('dashboard',)->with('success', 'Successfully updated a widget');
     }
 
     /**
      * Widget delete request processing
-     * @param int $id
+     * @param int $position
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
-    public function delete(int $id)
+    public function delete(int $position)
     {
+        $this->widgetRepository->delete($position);
+        return redirect()->route('dashboard')->with('success', 'Successfully deleted a widget');
+    }
+
+    /**
+     * Toggle editor's mode on and off
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function toggle_edit_mode()
+    {
+        Session::has('edit_mode') ? Session::forget('edit_mode') : Session::put('edit_mode', true);
+        return redirect()->back();
     }
 
 }
