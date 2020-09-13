@@ -13,9 +13,7 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-blue">
     <a class="navbar-brand" href="/"><img src="{{ asset('images/shkolo-logo.png') }}" alt="shkolo logo" width="150"></a>
 </nav>
-<div class="container-fluid mt-3">
-    @yield('content')
-</div>
+<main id="app"></main>
 </body>
 <script src="https://kit.fontawesome.com/428dc76d73.js" crossorigin="anonymous"></script>
 <script src="{{ asset('js/app.js') }}" ></script>

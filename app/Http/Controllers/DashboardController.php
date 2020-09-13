@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\WidgetUpdateRequest;
-use App\Models\Widgets;
+use App\Models\Widget;
 use App\Repositories\WidgetRepositoryInterface;
 use Illuminate\Support\Facades\Session;
 
@@ -36,33 +36,9 @@ class DashboardController extends Controller
      */
     public function edit(int $position)
     {
-        /** @var Widgets $widget */
+        /** @var Widget $widget */
         $widget = $this->widgetRepository->findOne($position);
         return view('widgets.edit')->with(['position' => $position, 'widget' => $widget]);
-    }
-
-    /**
-     * Widget update request processing
-     * @param WidgetUpdateRequest $request
-     * @param int $position
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(WidgetUpdateRequest $request, int $position)
-    {
-        $this->widgetRepository->update($request, $position);
-        return redirect()->route('dashboard',)->with('success', 'Successfully updated a widget');
-    }
-
-    /**
-     * Widget delete request processing
-     * @param int $position
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function delete(int $position)
-    {
-        $this->widgetRepository->delete($position);
-        return redirect()->route('dashboard')->with('success', 'Successfully deleted a widget');
     }
 
     /**

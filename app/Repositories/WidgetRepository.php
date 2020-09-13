@@ -5,12 +5,12 @@ namespace App\Repositories;
 
 
 use App\Http\Requests\WidgetUpdateRequest;
-use App\Models\Widgets;
+use App\Models\Widget;
 
 class WidgetRepository implements WidgetRepositoryInterface
 {
     /**
-     * @var Widgets $model
+     * @var Widget $model
      */
     private $model;
 
@@ -18,9 +18,14 @@ class WidgetRepository implements WidgetRepositoryInterface
      * WidgetRepository constructor.
      * @param $model
      */
-    public function __construct(Widgets $model)
+    public function __construct(Widget $model)
     {
         $this->model = $model;
+    }
+
+    public function findAll()
+    {
+        return $this->model->all();
     }
 
     /**
@@ -37,18 +42,24 @@ class WidgetRepository implements WidgetRepositoryInterface
      * Update model record in database
      * @param WidgetUpdateRequest $request
      * @param int $position_id
+     * @return Widget
+     */
+    public function create(WidgetUpdateRequest $request, int $position_id)
+    {
+        return $this->model->create($request->all());
+    }
+
+    /**
+     * Update model record in database
+     * @param WidgetUpdateRequest $request
+     * @param int $position_id
+     * @return bool|void
      */
     public function update(WidgetUpdateRequest $request, int $position_id)
     {
-        /** @var Widgets $widget */
+        /** @var Widget $widget */
         $widget = $this->model->where('position', $position_id)->first();
-
-        if (!$widget) {
-            $this->model->create($request->all());
-            return;
-        }
-
-        $widget->update($request->all());
+        return $widget->update($request->all());
     }
 
     /**
@@ -58,8 +69,8 @@ class WidgetRepository implements WidgetRepositoryInterface
      */
     public function delete(int $position_id)
     {
-        /** @var Widgets $widget */
-        $widget = Widgets::where('position', $position_id)->first();
+        /** @var Widget $widget */
+        $widget = Widget::where('position', $position_id)->first();
         $widget->delete();
     }
 }
