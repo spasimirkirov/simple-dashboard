@@ -1,11 +1,26 @@
 import React from 'react';
 import {withRouter} from "react-router-dom";
+import * as Api from "../requests";
 
 class DashboardWidgets extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            isLoading: true,
+            widgets: []
+        }
         this.handleWidgetCreate = this.handleWidgetCreate.bind(this);
+    }
+
+    componentDidMount() {
+        Api.findAll().then((res) => {
+            this.setState({
+                    widgets: res.data,
+                    isLoading: false
+                }
+            )
+        });
     }
 
     handleWidgetURL(e) {
@@ -13,32 +28,42 @@ class DashboardWidgets extends React.Component {
     }
 
     handleWidgetCreate(position_id) {
-        this.props.history.push(`/widget/create/${position_id}`)
+        this.props.history.push(`/widgets/create/${position_id}`)
+    }
+
+    renderWidgetEmpty(index) {
+        return (
+            <div className="col mb-2 p-1" key={index}>
+                <div className="card d-flex justify-content-center w-100 border rounded">
+                    <a className='btn' onClick={() => this.handleWidgetCreate(index)}>
+                        <i className="fa fa-plus-circle fa-2x text-primary" aria-hidden="true"> </i>
+                    </a>
+                </div>
+            </div>
+        )
+    }
+
+    renderWidget(slot) {
+        const color_class = 'btn btn-lg ' + slot.color;
+        return (
+            <div className="col mb-2 p-1" key={slot.position}>
+                <div className="card d-flex justify-content-center w-100 border rounded">
+                    <a className={color_class} onClick={this.handleWidgetURL} data-url={slot.url}>
+                        {slot.title}
+                    </a>
+                </div>
+            </div>
+        )
     }
 
     render() {
-        return Array(9).fill(null).map((slot, index) => {
-            console.log('widgetCards')
-
-            slot = this.props.widgets.find((widget) => {
-                return widget.position === index;
-            })
-
-            return (
-                <div className="col mb-2 p-1" key={index}>
-                    <div className="card d-flex justify-content-center w-100 border">
-                        {slot ? (
-                            <a className='btn' onClick={this.handleWidgetURL} data-url={slot.url}>
-                                slot.title}
-                            </a>
-                        ) : (
-                            <a className='btn' onClick={() => this.handleWidgetCreate(index)}>
-                                <i className="fa fa-plus-circle fa-3x text-primary" aria-hidden="true"> </i>
-                            </a>
-                        )}
-                    </div>
-                </div>
-            )
+        return !this.state.isLoading && Array(9).fill(null).map((slot, index) => {
+            if (this.state.widgets.length > 0) {
+                slot = this.state.widgets.find((widget) => {
+                    return widget.position === index;
+                })
+            }
+            return slot ? this.renderWidget(slot) : this.renderWidgetEmpty(index)
         })
     }
 }

@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
-<nav class="navbar navbar-expand-sm navbar-light bg-blue">
-    <a class="navbar-brand" href="/"><img src="{{ asset('images/shkolo-logo.png') }}" alt="shkolo logo" width="150"></a>
-</nav>
 <main id="app"></main>
 </body>
 <script src="https://kit.fontawesome.com/428dc76d73.js" crossorigin="anonymous"></script>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\WidgetUpdateRequest;
 use App\Models\Widget;
 use App\Repositories\WidgetRepositoryInterface;
 use Illuminate\Support\Facades\Session;

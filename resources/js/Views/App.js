@@ -1,22 +1,24 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import {ModeProvider} from '../context/mode-context';
 
 import Dashboard from "./Dashboard";
 import WidgetCreate from "./WidgetCreate";
+import NavBar from "../components/NavBar";
 
 export default class App extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
             <BrowserRouter>
-                <Switch>
-                    <Route exact path='/' component={Dashboard}/>
-                    <Route exact path='/widget/create/:id' component={WidgetCreate}/>
-                </Switch>
+                <ModeProvider>
+                    <NavBar/>
+                    <Switch>
+                        <Route exact path='/' component={Dashboard}/>
+                        <Route exact path='/widgets/create/:position_id' component={WidgetCreate}/>
+                    </Switch>
+                </ModeProvider>
             </BrowserRouter>
         );
     }

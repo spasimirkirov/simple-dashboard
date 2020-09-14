@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\WidgetUpdateRequest;
+use App\Models\Widget;
 use App\Repositories\WidgetRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -42,32 +42,38 @@ class WidgetController extends Controller
      */
     public function store(Request $request)
     {
-        $widgets = $this->repository->update($request);
+        $widgets = $this->repository->create($request);
         return response()->json($widgets, 201);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param WidgetUpdateRequest $request
-     * @param int $position_id
+     * @param \Illuminate\Http\Request $request
+     * @param Widget $widget
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(WidgetUpdateRequest $request, int $position_id)
+    public function update(Request $request, Widget $widget)
     {
-        $widget = $this->repository->update($request, $position_id);
+        $input = [
+            'title' => $request->input('title'),
+            'url' => $request->input('url'),
+            'color' => $request->input('color'),
+            'position' => $request->input('position'),
+        ];
+        $widget = $this->repository->update($widget, $input);
         return response()->json($widget);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $position_id
+     * @param Widget $widget
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(int $position_id)
+    public function destroy(Widget $widget)
     {
-        $this->widgetRepository->delete($position_id);
+        $this->repository->delete($widget);
         return response()->json(['message' => 'success'], 204);
     }
 }

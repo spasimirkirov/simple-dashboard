@@ -4,8 +4,8 @@
 namespace App\Repositories;
 
 
-use App\Http\Requests\WidgetUpdateRequest;
 use App\Models\Widget;
+use Illuminate\Http\Request;
 
 class WidgetRepository implements WidgetRepositoryInterface
 {
@@ -40,37 +40,32 @@ class WidgetRepository implements WidgetRepositoryInterface
 
     /**
      * Update model record in database
-     * @param WidgetUpdateRequest $request
-     * @param int $position_id
-     * @return Widget
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Widget $widget
      */
-    public function create(WidgetUpdateRequest $request, int $position_id)
+    public function create(Request $request)
     {
         return $this->model->create($request->all());
     }
 
     /**
      * Update model record in database
-     * @param WidgetUpdateRequest $request
-     * @param int $position_id
+     * @param array $input
+     * @param \App\Models\Widget $widget
      * @return bool|void
      */
-    public function update(WidgetUpdateRequest $request, int $position_id)
+    public function update(Widget $widget, array $input)
     {
-        /** @var Widget $widget */
-        $widget = $this->model->where('position', $position_id)->first();
-        return $widget->update($request->all());
+        return $widget->update($input);
     }
 
     /**
      * Delete model record in database
-     * @param int $position_id
+     * @param \App\Models\Widget $widget
      * @throws \Exception
      */
-    public function delete(int $position_id)
+    public function delete(Widget $widget)
     {
-        /** @var Widget $widget */
-        $widget = Widget::where('position', $position_id)->first();
         $widget->delete();
     }
 }
