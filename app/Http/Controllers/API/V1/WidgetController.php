@@ -27,7 +27,7 @@ class WidgetController extends Controller
             'title' => 'required|max:255',
             'url' => 'required|url',
             'color' => 'required|in:red,blue,green',
-            'position' => 'required|between:1,9'
+            'position' => 'required|integer|between:0,9',
         ];
     }
 
