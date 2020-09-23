@@ -6,6 +6,7 @@ import {ModeProvider} from '../context/mode-context';
 import Dashboard from "./Dashboard";
 import Create from "./Create";
 import NavBar from "../components/NavBar";
+import NotFound from "./NotFound";
 
 export default class App extends Component {
 
@@ -16,7 +17,8 @@ export default class App extends Component {
                     <NavBar/>
                     <Switch>
                         <Route exact path='/' component={Dashboard}/>
-                        <Route exact path='/widgets/create/:position_id' component={Create}/>
+                        <Route exact path='/widgets/create/:position_id(\d+)' component={Create}/>
+                        <Route path="" component={NotFound} />
                     </Switch>
                 </ModeProvider>
             </BrowserRouter>
