@@ -21,5 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/widgets', '\App\Http\Controllers\API\V1\WidgetController@index');
 Route::post('/widgets', '\App\Http\Controllers\API\V1\WidgetController@store');
 
-Route::put('/widgets/{widget}', '\App\Http\Controllers\API\V1\WidgetController@update');
+Route::patch('/widgets/{widget}', '\App\Http\Controllers\API\V1\WidgetController@update');
 Route::delete('/widgets/{widget}', '\App\Http\Controllers\API\V1\WidgetController@destroy');
