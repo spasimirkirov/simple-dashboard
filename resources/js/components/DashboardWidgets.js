@@ -37,17 +37,18 @@ class DashboardWidgets extends React.Component {
                 return widget.position === index;
             })
         }
-        return (
-            <div className="" key={index}>
+        return <div className="col-1 col-md-4 mb-4" key={index}>
+            <div className="card flex-center h-100">
                 {
                     slot ? <Widget data={slot}/> : <WidgetEmpty position={index}/>
                 }
-            </div>)
+            </div>
+        </div>
     }
 
     render() {
         return (
-            <div className="row row-cols-1 row-cols-md-3">
+            <div className="row">
                 {!this.state.isLoading && Array(9).fill(null).map(this.renderGrid)}
             </div>
         )

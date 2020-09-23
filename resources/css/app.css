@@ -1,23 +1,30 @@
 
-
-.bg-blue{
+.bg-blue {
     background-color: #2F5F89;
 }
 
-.border-black{
+.border-black {
     border: #000;
 }
 
 
-.widget-red{
+.widget-red {
     background-color: #e3342f !important;
     color: #000000;
 }
-.widget-green{
+
+.widget-green {
     background-color: #38c172 !important;
     color: #000000;
 }
-.widget-blue{
+
+.widget-blue {
     background-color: #6cb2eb !important;
     color: #000000;
+}
+
+.flex-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

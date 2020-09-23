@@ -5,24 +5,24 @@ export default function renderWidgetEdit(props) {
     const {slot, handlers} = props;
     const formRef = React.useRef();
     return (
-        <div className="col mb-2 p-1">
-            <form ref={formRef}>
-                <div className="card d-flex justify-content-center w-100 border rounded">
-                    <div className="form-group d-flex justify-content-center">
+        <div className="row">
+            <div className="col-12">
+                <form ref={formRef}>
+                    <div className="form-group">
                         <label> Title
                             <input className="form-control" type="text" name="title" defaultValue={slot.title}/>
                         </label>
                     </div>
-                    <div className="form-group d-flex justify-content-center">
+                    <div className="form-group">
                         <label> URL
                             <input className="form-control" type="text" name="url" defaultValue={slot.url}/>
                         </label>
                     </div>
-                    <div className="form-group d-flex justify-content-center">
+                    <div className="form-group">
                         <SelectColor selected={slot.color}/>
                     </div>
-                    <div className="form-group d-flex justify-content-around">
-                        <button type="submit" className="btn btn-primary" onClick={(e) => {
+                    <div className="form-group">
+                        <button type="submit" className="btn btn-primary mr-2" onClick={(e) => {
                             e.preventDefault();
                             handlers.handleUpdate(formRef.current, slot.position, slot.id)
                         }}>Update
@@ -33,8 +33,8 @@ export default function renderWidgetEdit(props) {
                         }}>Delete
                         </button>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     )
 

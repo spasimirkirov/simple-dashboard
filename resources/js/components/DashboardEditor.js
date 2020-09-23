@@ -4,6 +4,7 @@ import * as Api from "../requests";
 import * as API from "../requests";
 import WidgetEdit from "./widgets/WidgetEdit";
 import WidgetEmpty from "./widgets/WidgetEmpty";
+import WidgetCard from "./WidgetCard";
 
 class DashboardWidgets extends React.Component {
 
@@ -14,6 +15,8 @@ class DashboardWidgets extends React.Component {
             widgets: []
         }
         this.handleWidgetCreate = this.handleWidgetCreate.bind(this);
+        this.handleWidgetDelete = this.handleWidgetDelete.bind(this);
+        this.handleWidgetUpdate = this.handleWidgetUpdate.bind(this);
     }
 
     resetState() {
@@ -68,18 +71,27 @@ class DashboardWidgets extends React.Component {
 
     render() {
         return (
-            <div className="row row-cols-1 row-cols-3">
+            <div className="row">
                 {!this.state.isLoading && Array(9).fill(null).map((slot, index) => {
                     if (this.state.widgets.length > 0) {
                         slot = this.state.widgets.find((widget) => {
                             return widget.position === index;
                         })
                     }
-                    return slot ?
-                        <WidgetEdit slot={slot} handlers={{
-                            handleUpdate: this.handleWidgetUpdate,
-                            handleDelete: this.handleWidgetDelete,
-                        }} key={index}/> : <WidgetEmpty position={index} key={index}/>
+                    return (
+                        <div className="col-1 col-md-4 mb-2" key={index}>
+                            <WidgetCard>
+                                {
+                                    slot ?
+                                        <WidgetEdit slot={slot} handlers={{
+                                            handleUpdate: this.handleWidgetUpdate,
+                                            handleDelete: this.handleWidgetDelete,
+                                        }}/> :
+                                        <WidgetEmpty position={index}/>
+                                }
+                            </WidgetCard>
+                        </div>
+                    )
                 })}
             </div>
         )

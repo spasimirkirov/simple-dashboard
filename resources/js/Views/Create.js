@@ -47,9 +47,7 @@ class Create extends Component {
             <Container>
                 <div className={'row d-flex justify-content-center'}>
                     {this.state.failed && this.showErrors()}
-                    <WidgetCreate handlers={{
-                        handleCreate: this.handleSubmit
-                    }}/>
+                    <WidgetCreate handlers={{handleCreate: this.handleSubmit}}/>
                 </div>
             </Container>
         )
