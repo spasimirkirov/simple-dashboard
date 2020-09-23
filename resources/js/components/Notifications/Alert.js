@@ -6,8 +6,10 @@ export default function Alert(props) {
         'warning': 'alert-warning',
         'info': 'alert-info',
     }
-    return <div className="col">
-        <div className={'alert ' + theme[props.type]} dangerouslySetInnerHTML={{__html: props.message}}>
+
+    return (
+        <div className={'alert alert-dismissable ' + theme[props.type]}
+             dangerouslySetInnerHTML={{__html: props.message}} role="alert">
         </div>
-    </div>
+    )
 }

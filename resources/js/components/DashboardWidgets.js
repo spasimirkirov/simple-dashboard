@@ -4,6 +4,7 @@ import * as Api from "../requests";
 import Container from "./Container";
 import WidgetEmpty from "./widgets/WidgetEmpty";
 import Widget from "./widgets/Widget";
+import WidgetCard from "./WidgetCard";
 
 class DashboardWidgets extends React.Component {
 
@@ -38,11 +39,11 @@ class DashboardWidgets extends React.Component {
             })
         }
         return <div className="col-1 col-md-4 mb-4" key={index}>
-            <div className="card flex-center h-100">
+            <WidgetCard>
                 {
                     slot ? <Widget data={slot}/> : <WidgetEmpty position={index}/>
                 }
-            </div>
+            </WidgetCard>
         </div>
     }
 

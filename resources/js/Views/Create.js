@@ -10,7 +10,6 @@ class Create extends Component {
         this.formRef = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            success: false,
             failed: false,
             errors: []
         }
@@ -33,7 +32,9 @@ class Create extends Component {
 
     showErrors() {
         const {errors} = this.state;
-        let message = '';
+        let message = "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+            "<span aria-hidden=\"true\">&times;</span>\n" +
+            "</button>"
         for (const [key, value] of Object.entries(errors)) {
             message += key.charAt(0).toUpperCase() + key.slice(1) + ': ' + value.join("<br/>");
             message += "<br/>"
@@ -46,7 +47,11 @@ class Create extends Component {
         return (
             <Container>
                 <div className={'row d-flex justify-content-center'}>
-                    {this.state.failed && this.showErrors()}
+                    <div className="col-12 col-md-4">
+                        {this.state.failed && this.showErrors()}
+                    </div>
+                </div>
+                <div className={'row d-flex justify-content-center'}>
                     <WidgetCreate handlers={{handleCreate: this.handleSubmit}}/>
                 </div>
             </Container>

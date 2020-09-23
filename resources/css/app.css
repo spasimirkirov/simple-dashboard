@@ -10,21 +10,25 @@
 
 .widget-red {
     background-color: #e3342f !important;
-    color: #000000;
+    color: #FFF;
 }
 
 .widget-green {
     background-color: #38c172 !important;
-    color: #000000;
+    color: #FFF;
 }
 
 .widget-blue {
     background-color: #6cb2eb !important;
-    color: #000000;
+    color: #FFF;
 }
 
-.flex-center{
+.flex-center {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.widget-card {
+    min-height: 40px;
 }

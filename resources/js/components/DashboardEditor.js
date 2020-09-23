@@ -5,6 +5,8 @@ import * as API from "../requests";
 import WidgetEdit from "./widgets/WidgetEdit";
 import WidgetEmpty from "./widgets/WidgetEmpty";
 import WidgetCard from "./WidgetCard";
+import Alert from "./Notifications/Alert";
+import Container from "./Container";
 
 class DashboardWidgets extends React.Component {
 
@@ -12,6 +14,8 @@ class DashboardWidgets extends React.Component {
         super(props);
         this.state = {
             isLoading: true,
+            failed: false,
+            errors: [],
             widgets: []
         }
         this.handleWidgetCreate = this.handleWidgetCreate.bind(this);
@@ -59,6 +63,13 @@ class DashboardWidgets extends React.Component {
         API.widgetUpdate(formData, id).then((res) => {
             this.resetState();
             this.fetchWidgets()
+        }).catch(err => {
+            this.setState(() => {
+                return {
+                    failed: true,
+                    errors: err.response.data.errors
+                }
+            });
         })
     }
 
@@ -69,30 +80,49 @@ class DashboardWidgets extends React.Component {
         })
     }
 
+    showErrors() {
+        const {errors} = this.state;
+        let message = "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+            "<span aria-hidden=\"true\">&times;</span>\n" +
+            "</button>"
+        for (const [key, value] of Object.entries(errors)) {
+            message += key.charAt(0).toUpperCase() + key.slice(1) + ': ' + value.join("<br/>");
+            message += "<br/>"
+        }
+        return <Alert type='error' message={message}/>
+    }
+
     render() {
         return (
-            <div className="row">
-                {!this.state.isLoading && Array(9).fill(null).map((slot, index) => {
-                    if (this.state.widgets.length > 0) {
-                        slot = this.state.widgets.find((widget) => {
-                            return widget.position === index;
-                        })
-                    }
-                    return (
-                        <div className="col-1 col-md-4 mb-2" key={index}>
-                            <WidgetCard>
-                                {
-                                    slot ?
-                                        <WidgetEdit slot={slot} handlers={{
-                                            handleUpdate: this.handleWidgetUpdate,
-                                            handleDelete: this.handleWidgetDelete,
-                                        }}/> :
-                                        <WidgetEmpty position={index}/>
-                                }
-                            </WidgetCard>
-                        </div>
-                    )
-                })}
+            <div>
+                <div className="row">
+                    <div className="col-12 col-md-12">
+                        {this.state.failed && this.showErrors()}
+                    </div>
+                </div>
+                <div className="row">
+                    {!this.state.isLoading && Array(9).fill(null).map((slot, index) => {
+                        if (this.state.widgets.length > 0) {
+                            slot = this.state.widgets.find((widget) => {
+                                return widget.position === index;
+                            })
+                        }
+                        return (
+                            <div className="col-1 col-md-4 mb-2" key={index}>
+                                <WidgetCard>
+                                    {
+                                        slot ?
+                                            <WidgetEdit slot={slot} handlers={{
+                                                handleUpdate: this.handleWidgetUpdate,
+                                                handleDelete: this.handleWidgetDelete,
+                                            }}/> :
+                                            <WidgetEmpty position={index}/>
+                                    }
+                                </WidgetCard>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         )
     }
