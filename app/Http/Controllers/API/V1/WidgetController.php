@@ -24,7 +24,7 @@ class WidgetController extends Controller
     {
         $this->repository = $repository;
         $this->rules = [
-            'title' => 'required|max:255',
+            'title' => 'required|string|max:255',
             'url' => 'required|url',
             'color' => 'required|in:red,blue,green',
             'position' => 'required|integer|between:0,9',
@@ -52,7 +52,6 @@ class WidgetController extends Controller
     {
         try {
             $request->validate($this->rules);
-
             $this->repository->create($request);
             return response()->json([
                 'status' => 'success',

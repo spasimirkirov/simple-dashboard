@@ -38,7 +38,7 @@ class DashboardWidgets extends React.Component {
                 return widget.position === index;
             })
         }
-        return <div className="col-1 col-md-4 mb-4" key={index}>
+        return <div className="col-12 col-md-4 mb-4" key={index}>
             <WidgetCard>
                 {
                     slot ? <Widget data={slot}/> : <WidgetEmpty position={index}/>

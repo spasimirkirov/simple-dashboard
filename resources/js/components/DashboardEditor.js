@@ -82,6 +82,7 @@ class DashboardWidgets extends React.Component {
         let message = "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
             "<span aria-hidden=\"true\">&times;</span>\n" +
             "</button>"
+        message += "Something went wrong <br>";
         for (const [key, value] of Object.entries(errors)) {
             message += key.charAt(0).toUpperCase() + key.slice(1) + ': ' + value.join("<br/>");
             message += "<br/>"
@@ -105,7 +106,7 @@ class DashboardWidgets extends React.Component {
                             })
                         }
                         return (
-                            <div className="col-1 col-md-4 mb-2" key={index}>
+                            <div className="col-12 col-md-4 mb-2" key={index}>
                                 <WidgetCard>
                                     {
                                         slot ?

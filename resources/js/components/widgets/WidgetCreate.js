@@ -6,16 +6,16 @@ import WidgetCard from "../WidgetCard";
 const WidgetCreate = (props) => {
     const {handlers} = props;
 
-    const handleBack = e => {
-        e.preventDefault();
-        props.history.goBack();
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         formData.append('position', props.match.params.position_id)
         handlers.handleCreate(formData)
+    }
+
+    const handleBack = e => {
+        e.preventDefault();
+        props.history.goBack();
     }
 
     return (

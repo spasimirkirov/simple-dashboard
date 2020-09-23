@@ -7,11 +7,11 @@ import Alert from "../components/Notifications/Alert";
 class Create extends Component {
     constructor(props) {
         super(props);
-        this.handleCreate = this.handleCreate.bind(this);
         this.state = {
             failed: false,
             errors: []
         }
+        this.handleCreate = this.handleCreate.bind(this);
     }
 
     handleCreate(formData) {
@@ -21,9 +21,16 @@ class Create extends Component {
             this.setState(() => {
                 return {
                     failed: true,
-                    errors: err.response.data.errors
                 }
             });
+            if (err.response.data.errors) {
+                this.setState(() => {
+                    return {
+                        failed: true,
+                        errors: err.response.data.errors
+                    }
+                });
+            }
         })
     }
 
@@ -32,6 +39,7 @@ class Create extends Component {
         let message = "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
             "<span aria-hidden=\"true\">&times;</span>\n" +
             "</button>"
+        message += "Something went wrong <br>";
         for (const [key, value] of Object.entries(errors)) {
             message += key.charAt(0).toUpperCase() + key.slice(1) + ': ' + value.join("<br/>");
             message += "<br/>"
@@ -40,7 +48,6 @@ class Create extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <Container>
                 <div className={'row d-flex justify-content-center'}>

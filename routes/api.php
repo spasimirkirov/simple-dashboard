@@ -18,4 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/widgets', \App\Http\Controllers\API\V1\WidgetController::class);
+Route::get('/widgets', '\App\Http\Controllers\API\V1\WidgetController@index');
+Route::post('/widgets', '\App\Http\Controllers\API\V1\WidgetController@store');
+
+Route::put('/widgets/{widget}', '\App\Http\Controllers\API\V1\WidgetController@update');
+Route::delete('/widgets/{widget}', '\App\Http\Controllers\API\V1\WidgetController@destroy');
