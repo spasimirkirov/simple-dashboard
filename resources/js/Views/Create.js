@@ -7,17 +7,14 @@ import Alert from "../components/Notifications/Alert";
 class Create extends Component {
     constructor(props) {
         super(props);
-        this.formRef = React.createRef();
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCreate = this.handleCreate.bind(this);
         this.state = {
             failed: false,
             errors: []
         }
     }
 
-    handleSubmit(form, index) {
-        const formData = new FormData(form);
-        formData.append('position', this.props.match.params.position_id)
+    handleCreate(formData) {
         API.widgetCreate(formData).then(res => {
             this.props.history.push('/')
         }).catch(err => {
@@ -52,7 +49,7 @@ class Create extends Component {
                     </div>
                 </div>
                 <div className={'row d-flex justify-content-center'}>
-                    <WidgetCreate handlers={{handleCreate: this.handleSubmit}}/>
+                    <WidgetCreate handlers={{handleCreate: this.handleCreate}}/>
                 </div>
             </Container>
         )

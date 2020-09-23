@@ -56,10 +56,7 @@ class DashboardWidgets extends React.Component {
 
     }
 
-    handleWidgetUpdate(form, pos, id) {
-        const formData = new FormData(form);
-        formData.append('_method', 'PATCH');
-        formData.append('position', pos);
+    handleWidgetUpdate(formData, id) {
         API.widgetUpdate(formData, id).then((res) => {
             this.resetState();
             this.fetchWidgets()

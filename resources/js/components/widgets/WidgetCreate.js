@@ -4,21 +4,24 @@ import {withRouter} from "react-router-dom";
 import WidgetCard from "../WidgetCard";
 
 const WidgetCreate = (props) => {
-    const {index, handlers} = props;
-    const formRef = React.useRef();
-    const handleSubmit = e => {
-        e.preventDefault();
-        handlers.handleCreate(formRef.current, index)
-    }
+    const {handlers} = props;
 
     const handleBack = e => {
         e.preventDefault();
         props.history.goBack();
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        formData.append('position', props.match.params.position_id)
+        handlers.handleCreate(formData)
+    }
+
     return (
         <div className="col-12 col-md-4">
             <WidgetCard>
-                <form ref={formRef}>
+                <form method="post" action="" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label> Title
                             <input className="form-control" type="text" name="title"/>
@@ -33,7 +36,7 @@ const WidgetCreate = (props) => {
                         <SelectColor/>
                     </div>
                     <div className="form-group">
-                        <button type="submit" className="btn btn-success mr-2" onClick={handleSubmit}>Create</button>
+                        <button type="submit" className="btn btn-success mr-2">Create</button>
                         <button className="btn btn-info text-light" onClick={handleBack}>Back</button>
                     </div>
                 </form>
