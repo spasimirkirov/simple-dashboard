@@ -2,6 +2,8 @@ import React from 'react';
 import {withRouter} from "react-router-dom";
 import * as Api from "../requests";
 import * as API from "../requests";
+import WidgetEdit from "./widgets/WidgetEdit";
+import WidgetEmpty from "./widgets/WidgetEmpty";
 
 class DashboardWidgets extends React.Component {
 
@@ -64,97 +66,23 @@ class DashboardWidgets extends React.Component {
         })
     }
 
-    renderWidgetEmpty(index) {
-        const formRef = React.createRef();
-        return (
-            <div className="col mb-2 p-1" key={index}>
-                <form ref={formRef}>
-                    <div className="card d-flex justify-content-center w-100 border rounded">
-                        <div className="form-group d-flex justify-content-center">
-                            <label> Title
-                                <input className="form-control" type="text" name="title"/>
-                            </label>
-                        </div>
-                        <div className="form-group d-flex justify-content-center">
-                            <label> URL
-                                <input className="form-control" type="text" name="url"/>
-                            </label>
-                        </div>
-                        <div className="form-group d-flex justify-content-center">
-                            <label> Color
-                                <select className="custom-select" name="color">
-                                    <option>Choose</option>
-                                    <option value="bg-danger" className="text-danger">Red</option>
-                                    <option value="bg-success" className="text-success">Green</option>
-                                    <option value="bg-primary" className="text-primary">Blue</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div className="form-group d-flex justify-content-center">
-                            <button type="submit" className="btn btn-success" onClick={(e) => {
-                                e.preventDefault();
-                                this.handleWidgetCreate(formRef.current, index)
-                            }}>Create
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        )
-    }
-
-    renderWidgetEdit(slot) {
-        const formRef = React.createRef();
-        return (
-            <div className="col mb-2 p-1" key={slot.position}>
-                <form ref={formRef}>
-                    <div className="card d-flex justify-content-center w-100 border rounded">
-                        <div className="form-group d-flex justify-content-center">
-                            <label> Title
-                                <input className="form-control" type="text" name="title" defaultValue={slot.title}/>
-                            </label>
-                        </div>
-                        <div className="form-group d-flex justify-content-center">
-                            <label> URL
-                                <input className="form-control" type="text" name="url" defaultValue={slot.url}/>
-                            </label>
-                        </div>
-                        <div className="form-group d-flex justify-content-center">
-                            <label> Color
-                                <select className="custom-select" name="color" defaultValue={slot.color}>
-                                    <option value="bg-danger" className="text-danger">Red</option>
-                                    <option value="bg-success" className="text-success">Green</option>
-                                    <option value="bg-primary" className="text-primary">Blue</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div className="form-group d-flex justify-content-around">
-                            <button type="submit" className="btn btn-primary" onClick={(e) => {
-                                e.preventDefault();
-                                this.handleWidgetUpdate(formRef.current, slot.position, slot.id)
-                            }}>Update
-                            </button>
-                            <button type="submit" className="btn btn-danger" onClick={(e) => {
-                                e.preventDefault();
-                                this.handleWidgetDelete(slot.id)
-                            }}>Delete
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        )
-    }
-
     render() {
-        return !this.state.isLoading && Array(9).fill(null).map((slot, index) => {
-            if (this.state.widgets.length > 0) {
-                slot = this.state.widgets.find((widget) => {
-                    return widget.position === index;
-                })
-            }
-            return slot ? this.renderWidgetEdit(slot) : this.renderWidgetEmpty(index)
-        })
+        return (
+            <div className="row row-cols-1 row-cols-3">
+                {!this.state.isLoading && Array(9).fill(null).map((slot, index) => {
+                    if (this.state.widgets.length > 0) {
+                        slot = this.state.widgets.find((widget) => {
+                            return widget.position === index;
+                        })
+                    }
+                    return slot ?
+                        <WidgetEdit slot={slot} handlers={{
+                            handleUpdate: this.handleWidgetUpdate,
+                            handleDelete: this.handleWidgetDelete,
+                        }} key={index}/> : <WidgetEmpty position={index} key={index}/>
+                })}
+            </div>
+        )
     }
 }
 

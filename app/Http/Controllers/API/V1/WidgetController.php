@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Widget;
 use App\Repositories\WidgetRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class WidgetController extends Controller
 {
@@ -13,6 +14,7 @@ class WidgetController extends Controller
      * @var WidgetRepositoryInterface
      */
     private $repository;
+    private $rules;
 
     /**
      * WidgetController constructor.
@@ -21,6 +23,12 @@ class WidgetController extends Controller
     public function __construct(WidgetRepositoryInterface $repository)
     {
         $this->repository = $repository;
+        $this->rules = [
+            'title' => 'required|max:255',
+            'url' => 'required|url',
+            'color' => 'required|in:red,blue,green',
+            'position' => 'required|between:1,9'
+        ];
     }
 
     /**
@@ -42,8 +50,22 @@ class WidgetController extends Controller
      */
     public function store(Request $request)
     {
-        $widgets = $this->repository->create($request);
-        return response()->json($widgets, 201);
+        try {
+            $request->validate($this->rules);
+
+            $this->repository->create($request);
+            return response()->json([
+                'status' => 'success',
+                'msg' => 'Okay',
+            ], 201);
+
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Error',
+                'errors' => $exception->errors(),
+            ], 422);
+        }
     }
 
     /**
@@ -55,14 +77,25 @@ class WidgetController extends Controller
      */
     public function update(Request $request, Widget $widget)
     {
-        $input = [
-            'title' => $request->input('title'),
-            'url' => $request->input('url'),
-            'color' => $request->input('color'),
-            'position' => $request->input('position'),
-        ];
-        $widget = $this->repository->update($widget, $input);
-        return response()->json($widget);
+        try {
+            $request->validate($this->rules);
+            $this->repository->update($widget, [
+                'title' => $request->input('title'),
+                'url' => $request->input('url'),
+                'color' => $request->input('color'),
+                'position' => $request->input('position'),
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'msg' => 'Okay',
+            ], 201);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Error',
+                'errors' => $exception->errors(),
+            ], 422);
+        }
     }
 
     /**

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import DashboardEditor from "../components/DashboardEditor";
 import DashboardWidgets from "../components/DashboardWidgets";
 import {ModeContext} from "../context/mode-context";
+import Container from "../components/Container";
 
 class Dashboard extends Component {
 
@@ -10,17 +11,16 @@ class Dashboard extends Component {
     }
 
     render() {
-        return <ModeContext.Consumer>
-            {(context) => <div className="container-fluid">
-                <div className="row row-cols-1 row-cols-md-3">
-                    {
-                        context.enabled ?
-                            <DashboardEditor/> :
-                            <DashboardWidgets/>
+        return (
+            <Container>
+                <ModeContext.Consumer>
+                    {(context) => context.enabled ?
+                        <DashboardEditor/> :
+                        <DashboardWidgets/>
                     }
-                </div>
-            </div>}
-        </ModeContext.Consumer>
+                </ModeContext.Consumer>
+            </Container>
+        )
     }
 }
 

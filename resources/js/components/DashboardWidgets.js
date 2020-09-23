@@ -1,6 +1,9 @@
 import React from 'react';
 import {withRouter} from "react-router-dom";
 import * as Api from "../requests";
+import Container from "./Container";
+import WidgetEmpty from "./widgets/WidgetEmpty";
+import Widget from "./widgets/Widget";
 
 class DashboardWidgets extends React.Component {
 
@@ -11,6 +14,7 @@ class DashboardWidgets extends React.Component {
             widgets: []
         }
         this.handleWidgetCreate = this.handleWidgetCreate.bind(this);
+        this.renderGrid = this.renderGrid.bind(this);
     }
 
     componentDidMount() {
@@ -23,48 +27,30 @@ class DashboardWidgets extends React.Component {
         });
     }
 
-    handleWidgetURL(e) {
-        this.props.history.push(e.target.dataset.url)
-    }
-
     handleWidgetCreate(position_id) {
         this.props.history.push(`/widgets/create/${position_id}`)
     }
 
-    renderWidgetEmpty(index) {
+    renderGrid(slot, index) {
+        if (this.state.widgets.length > 0) {
+            slot = this.state.widgets.find((widget) => {
+                return widget.position === index;
+            })
+        }
         return (
-            <div className="col mb-2 p-1" key={index}>
-                <div className="card d-flex justify-content-center w-100 border rounded">
-                    <a className='btn' onClick={() => this.handleWidgetCreate(index)}>
-                        <i className="fa fa-plus-circle fa-2x text-primary" aria-hidden="true"> </i>
-                    </a>
-                </div>
-            </div>
-        )
-    }
-
-    renderWidget(slot) {
-        const color_class = 'btn btn-lg ' + slot.color;
-        return (
-            <div className="col mb-2 p-1" key={slot.position}>
-                <div className="card d-flex justify-content-center w-100 border rounded">
-                    <a className={color_class} onClick={this.handleWidgetURL} data-url={slot.url}>
-                        {slot.title}
-                    </a>
-                </div>
-            </div>
-        )
+            <div className="" key={index}>
+                {
+                    slot ? <Widget data={slot}/> : <WidgetEmpty position={index}/>
+                }
+            </div>)
     }
 
     render() {
-        return !this.state.isLoading && Array(9).fill(null).map((slot, index) => {
-            if (this.state.widgets.length > 0) {
-                slot = this.state.widgets.find((widget) => {
-                    return widget.position === index;
-                })
-            }
-            return slot ? this.renderWidget(slot) : this.renderWidgetEmpty(index)
-        })
+        return (
+            <div className="row row-cols-1 row-cols-md-3">
+                {!this.state.isLoading && Array(9).fill(null).map(this.renderGrid)}
+            </div>
+        )
     }
 }
 

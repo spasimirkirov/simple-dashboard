@@ -4,7 +4,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import {ModeProvider} from '../context/mode-context';
 
 import Dashboard from "./Dashboard";
-import WidgetCreate from "./WidgetCreate";
+import Create from "./Create";
 import NavBar from "../components/NavBar";
 
 export default class App extends Component {
@@ -16,7 +16,7 @@ export default class App extends Component {
                     <NavBar/>
                     <Switch>
                         <Route exact path='/' component={Dashboard}/>
-                        <Route exact path='/widgets/create/:position_id' component={WidgetCreate}/>
+                        <Route exact path='/widgets/create/:position_id' component={Create}/>
                     </Switch>
                 </ModeProvider>
             </BrowserRouter>
